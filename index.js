@@ -57,6 +57,7 @@ app.get('/oauth/request_token', (req, res) => {
 
 app.get('/oauth/callback', (req, res) => {
   const sess = req.session;
+  console.log(req.query, req.body)
   const { oauth_token: token, oauth_verifier: verifier } = req.query;
   oauth.getOAuthAccessToken(token,
                             sess.tokenSecret,
