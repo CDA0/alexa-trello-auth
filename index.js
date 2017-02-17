@@ -43,12 +43,13 @@ app.get('/oauth/request_token', (req, res) => {
   sess.clientId = req.query.client_id;
   sess.redirectUri = req.query.redirect_uri;
   oauth.getOAuthRequestToken((error, token, tokenSecret, results) => {
+    console.log('e', error)
     sess.token = token;
     sess.tokenSecret = tokenSecret;
     let url = `${authorizeURL}`;
     url += `?oauth_token=${token}`;
     url += `&name=${appName}`;
-    url += `&scope${req.query.scope.replace(' ', ',')}`;
+    url += `&scope=${req.query.scope.replace(' ', ',')}`;
     url += `&expiration=never`;
     res.redirect(url);
   });
