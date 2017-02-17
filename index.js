@@ -26,7 +26,7 @@ const lokiOpts = {
 
 app.set('trust proxy', 1);
 app.use(session({
-  store: new LokiStore(options),
+  store: new LokiStore(lokiOpts),
   secret: process.env.SESSION_SECRET || 'keyboard cat',
   resave: false,
   saveUninitialized: true,
