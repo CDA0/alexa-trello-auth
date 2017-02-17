@@ -63,6 +63,7 @@ app.get('/oauth/callback', (req, res) => {
                             sess.tokenSecret,
                             verifier,
                             (error, accessToken, accessTokenSecret, results) => {
+    console.log('err', error, accessToken, accessTokenSecret, results)
     let url = `${sess.redirectUri}`;
     url += `#state=${sess.state}`;
     url += `&access_token=${accessToken}`;
