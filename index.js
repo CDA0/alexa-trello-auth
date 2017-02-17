@@ -58,7 +58,7 @@ app.get('/oauth/callback', (req, res) => {
   const sess = req.session;
   const { oauth_token: token, oauth_verifier: verifier } = req.query;
 
-  if (!token || ! verifier) res.redirect(sess.redirectUri);
+  if (!token || ! verifier) return res.redirect(sess.redirectUri);
 
   oauth.getOAuthAccessToken(token,
                             sess.tokenSecret,
