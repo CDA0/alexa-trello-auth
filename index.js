@@ -42,6 +42,7 @@ app.get('/oauth/request_token', (req, res) => {
   sess.state = req.query.state;
   sess.clientId = req.query.client_id;
   sess.redirectUri = req.query.redirect_uri;
+  console.log(req.query)
   oauth.getOAuthRequestToken((error, token, tokenSecret, results) => {
     sess.token = token;
     sess.tokenSecret = tokenSecret;
