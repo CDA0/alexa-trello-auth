@@ -43,7 +43,6 @@ app.get('/oauth/request_token', (req, res) => {
   sess.clientId = req.query.client_id;
   sess.redirectUri = req.query.redirect_uri;
   oauth.getOAuthRequestToken((error, token, tokenSecret, results) => {
-    console.log('e', error, token, tokenSecret, results)
     sess.token = token;
     sess.tokenSecret = tokenSecret;
     let url = `${authorizeURL}`;
@@ -57,13 +56,14 @@ app.get('/oauth/request_token', (req, res) => {
 
 app.get('/oauth/callback', (req, res) => {
   const sess = req.session;
-  console.log(req.query, req.body)
   const { oauth_token: token, oauth_verifier: verifier } = req.query;
+
+  if (!token || ! verifier) res.redirect(sess.redirectUri);
+
   oauth.getOAuthAccessToken(token,
                             sess.tokenSecret,
                             verifier,
                             (error, accessToken, accessTokenSecret, results) => {
-    console.log('err', error, accessToken, accessTokenSecret, results)
     let url = `${sess.redirectUri}`;
     url += `#state=${sess.state}`;
     url += `&access_token=${accessToken}`;
