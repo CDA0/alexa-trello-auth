@@ -1,25 +1,32 @@
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
+const LokiStore = require('connect-loki')(session);
 const OAuth = require('oauth').OAuth;
 
-const requestURL = "https://trello.com/1/OAuthGetRequestToken";
-const accessURL = "https://trello.com/1/OAuthGetAccessToken";
-const authorizeURL = "https://trello.com/1/OAuthAuthorizeToken";
-const appName = "Alexa Trello";
+const requestURL = 'https://trello.com/1/OAuthGetRequestToken';
+const accessURL = 'https://trello.com/1/OAuthGetAccessToken';
+const authorizeURL = 'https://trello.com/1/OAuthAuthorizeToken';
+const appName = process.env.APP_NAME || 'Alexa Trello';
 const key = process.env.TRELLO_KEY;
 const secret = process.env.TRELLO_SECRET;
 
-const loginCallback = "https://alexa-trello-auth.herokuapp.com/oauth/callback";
+const loginCallback = 'https://alexa-trello-auth.herokuapp.com/oauth/callback';
 
-const oauth = new OAuth(requestURL, accessURL, key, secret, "1.0", loginCallback, "HMAC-SHA1");
+const oauth = new OAuth(requestURL, accessURL, key, secret, '1.0', loginCallback, 'HMAC-SHA1');
 
 const app = express();
 
 app.set('port', process.env.PORT || 3000);
 
+const lokiOpts = {
+  autosave: false,
+  ttl: 86400 // 1 day
+};
+
 app.set('trust proxy', 1);
 app.use(session({
+  store: new LokiStore(options),
   secret: process.env.SESSION_SECRET || 'keyboard cat',
   resave: false,
   saveUninitialized: true,
