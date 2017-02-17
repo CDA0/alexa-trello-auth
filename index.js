@@ -42,11 +42,15 @@ app.get('/oauth/request_token', (req, res) => {
   sess.state = req.query.state;
   sess.clientId = req.query.client_id;
   sess.redirectUri = req.query.redirect_uri;
-  console.log(req.query)
   oauth.getOAuthRequestToken((error, token, tokenSecret, results) => {
     sess.token = token;
     sess.tokenSecret = tokenSecret;
-    res.redirect(`${authorizeURL}?oauth_token=${token}&name=${appName}&expiration=never`)
+    let url = `${authorizeURL}`;
+    url += `?oauth_token=${token}`;
+    url += `&name=${appName}`;
+    url += `&scope${req.query.scope.replace(' ', ',')}`;
+    url += `&expiration=never`;
+    res.redirect(url);
   });
 });
 
