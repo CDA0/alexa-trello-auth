@@ -38,7 +38,7 @@ app.get('/oauth/request_token', (req, res) => {
   oauth.getOAuthRequestToken((error, token, tokenSecret, results) => {
     sess.token = token;
     sess.tokenSecret = tokenSecret;
-    res.redirect(`${authorizeURL}?oauth_token=${token}&name=${appName}`)
+    res.redirect(`${authorizeURL}?oauth_token=${token}&name=${appName}&expiration=never`)
   });
 });
 
